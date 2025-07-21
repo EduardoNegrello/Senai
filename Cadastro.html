@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login / Cadastro - Acordes e Sons</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://images.unsplash.com/photo-1584270354949-8eecde56b8c7?auto=format&fit=crop&w=1400&q=80') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .container {
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 2rem;
+      border-radius: 10px;
+      width: 300px;
+      color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    .container h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .container input {
+      width: 100%;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      border: none;
+      border-radius: 5px;
+    }
+    .container button {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #c97a7a;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-weight: bold;
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+    .toggle {
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .toggle a {
+      color: #ccc;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="form-container">
+    <h1 id="form-title">Cadastre-se</h1>
+    <input type="text" id="username" placeholder="Usuário" />
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Senha" />
+    <button onclick="submitForm()">Criar Conta</button>
+    <div class="toggle">
+      Já tem uma conta? <a onclick="toggleForm()">Login</a>
+    </div>
+  </div>
+
+  <script>
+    let isLogin = false;
+
+    function toggleForm() {
+      const title = document.getElementById('form-title');
+      const button = document.querySelector('button');
+      const toggleText = document.querySelector('.toggle');
+      const usernameInput = document.getElementById('username');
+
+      isLogin = !isLogin;
+
+      if (isLogin) {
+        title.textContent = 'Login';
+        button.textContent = 'Entrar';
+        toggleText.innerHTML = 'Não tem conta? <a onclick="toggleForm()">Cadastre-se</a>';
+        usernameInput.style.display = 'none';
+      } else {
+        title.textContent = 'Cadastre-se';
+        button.textContent = 'Criar Conta';
+        toggleText.innerHTML = 'Já tem uma conta? <a onclick="toggleForm()">Login</a>';
+        usernameInput.style.display = 'block';
+      }
+    }
+
+    function submitForm() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const username = document.getElementById('username').value;
+
+      if (!email || !password || (!isLogin && !username)) {
+        alert('Preencha todos os campos.');
+        return;
+      }
+
+      if (isLogin) {
+        alert(`Login de ${email}`);
+        // Aqui você faria a requisição para /login
+      } else {
+        alert(`Cadastro de ${username} (${email})`);
+        // Aqui você faria a requisição para /register
+      }
+    }
+  </script>
+</body>
+</html>
