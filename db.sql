@@ -1,3 +1,8 @@
 CREATE DATABASE ecommerce CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'ecom_user'@'localhost' IDENTIFIED BY 'senha_segura';
-GRANT ALL PRIVILEGES ON ecommerce.* TO 'ecom_user'@'localhost';
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(150) NOT NULL UNIQUE,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+    );
+    

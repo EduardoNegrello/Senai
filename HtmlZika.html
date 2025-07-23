@@ -1,232 +1,89 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Loja de Móveis</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f8f8f8;
+      padding: 2rem;
+      background-color: #f0f0f0;
     }
-    header {
-      background-color: #333;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-      position: relative;
-    }
-    header .auth {
-      position: absolute;
-      right: 1rem;
-      top: 1rem;
-    }
-    header .auth button {
-      background: #28a745;
-      color: white;
-      border: none;
-      padding: 0.5rem;
-      margin-left: 0.5rem;
-      cursor: pointer;
-    }
-    .container {
-      max-width: 1200px;
+
+    .form-container {
+      max-width: 400px;
       margin: auto;
-      padding: 1rem;
-    }
-    .filters input, .filters select {
-      padding: 0.5rem;
-      margin-right: 1rem;
-    }
-    .products {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-    .product {
+      padding: 2rem;
       background: white;
-      padding: 1rem;
-      border: 1px solid #ddd;
-      flex: 1 1 calc(25% - 1rem);
-      box-sizing: border-box;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
-    .product img {
-      max-width: 100%;
-      height: 150px;
-      object-fit: cover;
-    }
-    .product button {
-      margin-top: 0.5rem;
-      padding: 0.5rem;
-      background-color: #28a745;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    .cart {
-      background-color: #fff;
-      padding: 1rem;
-      margin-top: 2rem;
-      border: 1px solid #ddd;
-    }
-    .cart-item {
-      display: flex;
-      justify-content: space-between;
-      padding: 0.5rem 0;
-    }
-    .cart-total {
-      font-weight: bold;
-      text-align: right;
-      margin-top: 1rem;
-    }
-    .login-form, .register-form {
-      background-color: #fff;
-      padding: 1rem;
-      margin-bottom: 2rem;
-      border: 1px solid #ddd;
-    }
-    .login-form input, .register-form input {
-      display: block;
+
+    input {
       width: 100%;
-      margin-bottom: 1rem;
       padding: 0.5rem;
+      margin: 0.5rem 0 1rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
-    .login-form button, .register-form button {
-      background-color: #333;
+
+    button {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #007bff;
       color: white;
-      padding: 0.5rem;
       border: none;
+      border-radius: 4px;
       cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Loja de Móveis do Dudão</h1>
-    <div class="auth">
-      <button onclick="showLogin()">Login</button>
-      <button onclick="showRegister()">Cadastro</button>
-    </div>
-  </header>
 
-  <div class="container">
-    <div id="authForms"></div>
-
-    <div class="filters">
-      <input type="text" id="searchInput" placeholder="Buscar por nome..." />
-      <select id="categoryFilter">
-        <option value="">Todas as Categorias</option>
-        <option value="Sala">Sala</option>
-        <option value="Quarto">Quarto</option>
-        <option value="Cozinha">Cozinha</option>
-      </select>
-      <button onclick="filterProducts()">Filtrar</button>
-    </div>
-
-    <div class="products" id="products"></div>
-
-    <div class="cart" id="cart">
-      <h2>Carrinho</h2>
-      <div id="cartItems"></div>
-      <div class="cart-total" id="cartTotal">Total: R$ 0.00</div>
-    </div>
+  <div class="form-container">
+    <h2>Cadastro de Usuário</h2>
+    <input type="text" id="name" placeholder="Nome" required />
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Senha" required />
+    <button type="button" onclick="cadastrarUsuario()">Cadastrar</button>
   </div>
 
   <script>
-    const allProducts = [
-      { id: 1, name: "Sofá 3 Lugares", price: 3500, category: "Sala", image: "https://media.discordapp.net/attachments/1207356343753646211/1395241734925193367/image.png?ex=687a645f&is=687912df&hm=427a70e9270e2dc753e984d0afd1d3f7475b61d55926493e00274e3db9b40d97&=&format=webp&quality=lossless" },
-      { id: 2, name: "Cama Box Casal", price: 1500, category: "Quarto", image: "https://cdn.awsli.com.br/2500x2500/1313/1313093/produto/58605569/1-9y0t3x6vvu.png" },
-      { id: 3, name: "Mesa de Jantar", price: 850, category: "Cozinha", image: "https://homedock.com.br/cdn/shop/files/02_-_Mesa_de_Jantar_Addar_160_cm_-_Natural_c__Vidro_Off_WhiteAmbientada.webp?v=1732115063&width=1445" },
-      { id: 4, name: "Guarda-roupa", price: 700, category: "Quarto", image: "https://carrarob2c.vtexassets.com/arquivos/ids/157904/Guarda-Roupa-Casal-com-Espelho-4-Portas-Roma-Carraro-Freijo-01.jpg?v=638439639686070000" },
-      { id: 5, name: "Poltrona Reclinável", price: 560, category: "Sala", image: "data:image/jpeg;base64,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" },
-    ];
+    function cadastrarUsuario() {
+      const nome = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const senha = document.getElementById("password").value;
 
-    const cart = [];
-
-    function displayProducts(products) {
-      const container = document.getElementById('products');
-      container.innerHTML = '';
-      products.forEach(prod => {
-        container.innerHTML += `
-          <div class="product">
-            <img src="${prod.image}" alt="${prod.name}" />
-            <h3>${prod.name}</h3>
-            <p>R$ ${prod.price.toFixed(2)}</p>
-            <button onclick='addToCart(${JSON.stringify(prod)})'>Adicionar ao Carrinho</button>
-          </div>
-        `;
+      fetch("http://localhost:5000/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: nome,
+          email: email,
+          password: senha
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          alert("Erro: " + data.error);
+        } else {
+          alert("Usuário cadastrado com sucesso! ID: " + data.id);
+        }
+      })
+      .catch(error => {
+        console.error("Erro:", error);
+        alert("Erro ao cadastrar.");
       });
     }
-
-    function filterProducts() {
-      const search = document.getElementById('searchInput').value.toLowerCase();
-      const category = document.getElementById('categoryFilter').value;
-
-      const filtered = allProducts.filter(p => {
-        const matchName = p.name.toLowerCase().includes(search);
-        const matchCat = !category || p.category === category;
-        return matchName && matchCat;
-      });
-      displayProducts(filtered);
-    }
-
-    function addToCart(product) {
-      cart.push(product);
-      updateCart();
-    }
-
-    function updateCart() {
-      const cartItems = document.getElementById('cartItems');
-      const cartTotal = document.getElementById('cartTotal');
-
-      cartItems.innerHTML = '';
-      let total = 0;
-      cart.forEach((item, index) => {
-        cartItems.innerHTML += `
-          <div class="cart-item">
-            ${item.name} - R$ ${item.price.toFixed(2)}
-            <button onclick="removeFromCart(${index})">Remover</button>
-          </div>
-        `;
-        total += item.price;
-      });
-
-      cartTotal.innerText = `Total: R$ ${total.toFixed(2)}`;
-    }
-
-    function removeFromCart(index) {
-      cart.splice(index, 1);
-      updateCart();
-    }
-
-    function showLogin() {
-      document.getElementById('authForms').innerHTML = `
-        <div class="login-form">
-          <h2>Login</h2>
-          <input type="email" placeholder="E-mail" required />
-          <input type="password" placeholder="Senha" required />
-          <button>Entrar</button>
-        </div>
-      `;
-    }
-
-    function showRegister() {
-      document.getElementById('authForms').innerHTML = `
-        <div class="register-form">
-          <h2>Cadastro</h2>
-          <input type="text" placeholder="Nome" required />
-          <input type="email" placeholder="E-mail" required />
-          <input type="password" placeholder="Senha" required />
-          <button>Registrar</button>
-        </div>
-      `;
-    }
-
-    // Exibe todos ao carregar
-    displayProducts(allProducts);
   </script>
+
 </body>
 </html>
-
